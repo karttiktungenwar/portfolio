@@ -161,7 +161,7 @@
                                     <h6 class="font-weight-bold">50%</h6>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                                     <h6 class="font-weight-bold">75%</h6>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                             <div class="skill mb-4">
@@ -181,7 +181,7 @@
                                     <h6 class="font-weight-bold">25%</h6>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                             <div class="skill mb-4">
@@ -190,7 +190,7 @@
                                     <h6 class="font-weight-bold">25%</h6>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div>
@@ -523,10 +523,13 @@
             function subForm (){
                 $('#overlayerloader').show();
                 $.ajax({
-                    url:'https://api.apispreadsheets.com/data/11073/',
+                    url: "./enterData.xlsx",
+                    contentType: "application/vnd.ms-excel",
                     type:'post',
+                    crossDomain:true,
+                    headers:'Access-Control-Allow-Origin',
                     data:$("#myForm").serializeArray(),
-                    success: function(){
+                    success: function(data){
                         alert("Form Data Submitted :)")
                         $('#overlayerloader').hide();
                         $('#name').val('');
@@ -534,8 +537,8 @@
                         $('#subject').val('');
                         $('#comments').val('');
                     },
-                    error: function(){
-                        alert("There was an error :(")
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(jqXHR.responseText);
                         $('#overlayerloader').hide();
                     }
                 });
