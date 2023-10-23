@@ -436,7 +436,6 @@
                     <div class="d-flex pt-2">
                         <a class="btn btn-square btn-primary me-2" href="https://www.linkedin.com/in/kartik-tungenwar-b58867a0/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
                         <a class="btn btn-square btn-primary me-2" href="https://github.com/kartiktungenwar" target="_blank"><i class="fab fa-github"></i></a>
-                        <a class="btn btn-square btn-primary me-2" href="https://www.facebook.com/tungenwar.karthic/" target="_blank"><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-square btn-primary me-2" href="https://wa.me/+919322550904" target="_blank"><i class="fab" style='font-size:24px'>&#xf40c;</i></a>
                     </div>
                 </div>
@@ -513,30 +512,35 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Function subForm -->
     <script>
-            function subForm() {
-            $('#overlayerloader').show();
-            $.ajax({
-                url: "./enterData.xlsx",
-                contentType: "application/vnd.ms-excel",
-                type: 'post',
-                crossDomain: true,
-                headers: 'Access-Control-Allow-Origin',
-                data: $("#myForm").serializeArray(),
-                success: function (data) {
-                    alert("Form Data Submitted :)")
-                    $('#overlayerloader').hide();
-                    $('#name').val('');
-                    $('#email').val('');
-                    $('#subject').val('');
-                    $('#comments').val('');
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert(jqXHR.responseText);
-                    $('#overlayerloader').hide();
-                }
+        function subForm() {
+
+            // Get the Excel workbook object
+            const workbook = new Excel.Workbook();
+
+            // Create a new worksheet
+            const ws = workbook.addWorksheet('My Sheet');
+
+            // Add data to the worksheet
+            ws.getCell('A1').value = 'John Doe';
+            ws.getCell('B1').value = 'gardener';
+            ws.getCell('C1').value = new Date().toLocaleString();
+
+            // Add another row of data
+            ws.addRow([
+                'Jane Doe',
+                'teacher',
+                '2023-03-08T08:00:00Z'
+            ]);
+
+            // Save the workbook to a file
+            workbook.xlsx.writeFile('simple.xlsx').then(() => {
+                console.log('File created');
+            }).catch(err => {
+                console.log(err.message);
             });
         }
     </script>
