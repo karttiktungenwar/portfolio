@@ -106,7 +106,7 @@
         <div class="container">
             <div class="d-flex align-items-center mb-5">
                 <div class="years flex-shrink-0 text-center me-4">
-                    <h1 class="display-1 mb-0">6</h1>
+                    <h1 class="display-1 mb-0" id="yearsCounter">0</h1>
                     <h5 class="mb-0">Years</h5>
                 </div>
                 <h3 class="lh-base mb-0">
@@ -202,31 +202,31 @@
                                 <div class="col-sm-6">
                                     <h5>Programming Analyst</h5>
                                     <hr class="text-primary my-2">
-                                    <p class="text-primary mb-1">Feb 2021 - Present · 2 yrs 9 mos</p>
+                                    <p class="text-primary mb-1">Feb 2021 - Present · <span id="yearsMonths1"></span></p>
                                     <h6 class="mb-0">Mobicule Technologies Pvt. Ltd.</h6>
                                 </div>
                                 <div class="col-sm-6">
                                     <h5>Senior Android Developer</h5>
                                     <hr class="text-primary my-2">
-                                    <p class="text-primary mb-1">Jan 2019 - Dec 2020 · 2 yrs</p>
+                                    <p class="text-primary mb-1">Jan 2019 - Dec 2020 · <span id="yearsMonths2"></span></p>
                                     <h6 class="mb-0">Clintico Infotech Pvt Ltd</h6>
                                 </div>
                                 <div class="col-sm-6">
                                     <h5>Android Developer</h5>
                                     <hr class="text-primary my-2">
-                                    <p class="text-primary mb-1">Jan 2018 - Oct 2018 · 10 mos</p>
+                                    <p class="text-primary mb-1">Jan 2018 - Oct 2018 · <span id="yearsMonths3"></span></p>
                                     <h6 class="mb-0">Cyborg Systems Nebula Studios</h6>
                                 </div>
                                 <div class="col-sm-6">
                                     <h5>Android Developer</h5>
                                     <hr class="text-primary my-2">
-                                    <p class="text-primary mb-1">May 2017 - Jan 2018 · 9 mos</p>
+                                    <p class="text-primary mb-1">May 2017 - Jan 2018 · <span id="yearsMonths4"></span></p>
                                     <h6 class="mb-0">Techflux Solutions</h6>
                                 </div>
                                 <div class="col-sm-6">
                                     <h5>Int. Android Developer</h5>
                                     <hr class="text-primary my-2">
-                                    <p class="text-primary mb-1">Oct 2016 - Mar 2017 · 6 mos</p>
+                                    <p class="text-primary mb-1">Oct 2016 - Mar 2017 · <span id="yearsMonths5"></span></p>
                                     <h6 class="mb-0">Samkenishar Technoresearch</h6>
                                 </div>
                             </div>
@@ -557,6 +557,97 @@
             localStorage.setItem("page_view", 1);
         }
         counterContainer.innerHTML = visitCount;
+    </script>
+    <!-- Function years count -->
+     <script>
+         // Configuration
+        const startDate = new Date('2016-01-24'); // Set your start date here
+        const currentDate = new Date();
+        
+        // Calculate years of experience
+        let years = currentDate.getFullYear() - startDate.getFullYear();
+        const monthDiff = currentDate.getMonth() - startDate.getMonth();
+        
+        // Adjust if the current month is before the start month
+        if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < startDate.getDate())) {
+            years--;
+        }
+        
+        // Animate the counter
+        const counter = document.getElementById('yearsCounter');
+             // Animate counting up
+        let currentDisplay = 0;
+        const duration = 2000; // Animation duration in ms
+        const increment = years / (duration / 16); // ~60fps
+        
+        const animateCounter = () => {
+            if (currentDisplay < years) {
+                currentDisplay += increment;
+                counter.textContent = Math.floor(currentDisplay);
+                requestAnimationFrame(animateCounter);
+            } else {
+                counter.textContent = years;
+            }
+        };
+        
+        // Start animation after slight delay
+        setTimeout(animateCounter, 300);
+        
+        // Add visual feedback when the number changes
+        counter.addEventListener('DOMSubtreeModified', () => {
+            counter.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                counter.style.transform = 'scale(1)';
+            }, 100);
+        });
+    </script>
+    <!-- Function years and months count -->
+    <script>
+        function calculateExperience(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            let years = end.getFullYear() - start.getFullYear();
+            let months = end.getMonth() - start.getMonth();
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            return `${years} yrs ${months} mos`;
+        }
+
+        // Calculate experience for the first job
+        const startDate1 = '2021-02-01'; // Start date for the first job
+        const currentDate1 = new Date(); // Current date for the first job
+        const experienceDuration1 = calculateExperience(startDate1, currentDate1);
+        document.getElementById('yearsMonths1').textContent = experienceDuration1;
+
+        // Calculate experience for the second job
+        const startDate2 = '2019-01-01'; // Start date for the second job
+        const endDate2 = '2020-12-24'; // End date for the second job
+        const experienceDuration2 = calculateExperience(startDate2, endDate2);
+        document.getElementById('yearsMonths2').textContent = experienceDuration2;
+
+        // Calculate experience for the third job
+        const startDate3 = '2018-01-22'; // Start date for the third job
+        const endDate3 = '2018-09-31'; // End date for the third job
+        const experienceDuration3 = calculateExperience(startDate3, endDate3);
+        document.getElementById('yearsMonths3').textContent = experienceDuration3;
+
+
+        // Calculate experience for the fourth job
+        const startDate4 = '2017-05-02'; // Start date for the fourth job
+        const endDate4 = '2018-01-06'; // End date for the fourth job
+        const experienceDuration4 = calculateExperience(startDate4, endDate4);
+        document.getElementById('yearsMonths4').textContent = experienceDuration4;
+
+        // Calculate experience for the fourth job
+        const startDate5 = '2016-10-24'; // Start date for the fourth job
+        const endDate5 = '2017-03-24'; // End date for the fourth job
+        const experienceDuration5 = calculateExperience(startDate5, endDate5);
+        document.getElementById('yearsMonths5').textContent = experienceDuration5;
     </script>
 </body>
 
