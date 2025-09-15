@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title> Kartik Tungenwar - Career Portfolio</title>
+    <title> Karttik Tungenwar - Career Portfolio</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -71,7 +71,7 @@
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6 py-6 pb-0 pt-lg-0">
                     <h3 class="text-primary mb-3">I'm</h3>
-                    <h1 class="display-3 mb-3">Kartik Tungenwar</h1>
+                    <h1 class="display-3 mb-3">Karttik Tungenwar</h1>
                     <h2 class="typed-text-output d-inline"></h2>
                     <div class="typed-text d-none">Mobile Apps Designer,Mobile Apps Developer</div>
                     <div class="d-flex align-items-center pt-5">
@@ -434,8 +434,8 @@
                 <hr class="w-100">
                 <p class="mb-2">Let Connect Here:</p>
                 <div class="d-flex pt-2">
-                    <a class="btn btn-square btn-primary me-2" href="https://www.linkedin.com/in/kartik-tungenwar-b58867a0/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-square btn-primary me-2" href="https://github.com/kartiktungenwar" target="_blank"><i class="fab fa-github"></i></a>
+                    <a class="btn btn-square btn-primary me-2" href="https://www.linkedin.com/in/karttik-tungenwar-b58867a0/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-square btn-primary me-2" href="https://github.com/karttiktungenwar" target="_blank"><i class="fab fa-github"></i></a>
                     <a class="btn btn-square btn-primary me-2" href="https://wa.me/+919322550904" target="_blank"><i class="fab" style='font-size:24px'>&#xf40c;</i></a>
                 </div>
             </div>
@@ -635,6 +635,44 @@
         const experienceDuration5 = calculateExperience(startDate5, endDate5);
         document.getElementById('yearsMonths5').textContent = experienceDuration5;
     </script>
+
+    <script>
+    async function getVisitorIP() {
+        try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+        } catch (error) {
+        console.error('Failed to get IP address:', error);
+        return 'Unknown IP';
+        }
+    }
+
+    async function sendVisitorData() {
+        const ip = await getVisitorIP();
+        const visitorData = {
+        ip: ip,
+        browser: navigator.userAgent,
+        visitTime: new Date().toISOString(),
+        page: window.location.href
+        };
+
+        try {
+        await fetch(' http://127.0.0.1:8080/js/save-visitor-data', {  // Your server endpoint here
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(visitorData)
+        });
+        console.log('Visitor data sent successfully');
+        } catch (error) {
+        console.error('Error sending visitor data:', error);
+        }
+    }
+
+    // Send visitor data on page load
+    window.addEventListener('load', sendVisitorData);
+    </script>
+
 </body>
 
 </html>
