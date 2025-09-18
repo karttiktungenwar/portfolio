@@ -5,13 +5,12 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 
 const FILE_PATH = path.join(__dirname, 'visitor_data.xlsx');
 
-app.post('/save-visitor-data', (req, res) => {
+app.post('/js/save-visitor-data', (req, res) => {
   const newData = req.body;
 
   let workbook;
