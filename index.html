@@ -124,7 +124,7 @@
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <h1 class="display-5 mb-5">Skills & Experience</h1>
-                    <p class="mb-4">Seasoned Android Developer with over 9 years of experience in designing, developing, and deploying high-quality mobile applications. Proficient in Java and Kotlin, with a strong command over Android SDK, Jetpack and Fluter libraries, and modern architectural patterns like MVVM. Adept at integrating RESTful APIs, implementing secure data transmission, and enhancing user experience through intuitive UI designs. Committed to continuous learning and contributing to innovative mobile solutions.</p>
+                    <p class="mb-4">Seasoned Android Developer with over <span id="yearsMonths"></span> of experience in designing, developing, and deploying high-quality mobile applications. Proficient in Java and Kotlin, with a strong command over Android SDK, Jetpack and Fluter libraries, and modern architectural patterns like MVVM. Adept at integrating RESTful APIs, implementing secure data transmission, and enhancing user experience through intuitive UI designs. Committed to continuous learning and contributing to innovative mobile solutions.</p>
                     <h3 class="mb-4">My Skills</h3>
                     <div class="row align-items-center">
                         <div class="col-md-6">
@@ -603,6 +603,12 @@
 
             return `${years} yrs ${months} mos`;
         }
+
+        // Calculate experience for the first job
+        const withStartDate = '2016-10-24'; // Start date for the first job
+        const withCurrentDate = new Date(); // Current date for the first job
+        const experienceDuration = calculateExperience(withStartDate, withCurrentDate);
+        document.getElementById('yearsMonths').textContent = experienceDuration;
 
         // Calculate experience for the first job
         const startDate1 = '2021-02-01'; // Start date for the first job
