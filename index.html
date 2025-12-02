@@ -26,6 +26,7 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 
     <!-- =======================================================
     * Template Name: iPortfolio
@@ -675,7 +676,38 @@
           const endDate5 = '2017-03-24'; // End date for the fourth job
           const experienceDuration5 = calculateExperience(startDate5, endDate5);
           document.getElementById('yearsMonths5').textContent = experienceDuration5;
+          
       </script>
+
+    <!-- Script for tracking the users location
+      <script>
+        let locationData = [];
+
+        function getUserLocation() {
+          navigator.geolocation.getCurrentPosition((pos) => {
+            locationData.push({
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+              timestamp: new Date().toISOString()
+            });
+          });
+        }
+
+        function downloadLocationExcel() {
+          if (locationData.length === 0) {
+            alert("No location data available yet.");
+            return;
+          }
+
+          const ws = XLSX.utils.json_to_sheet(locationData);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Locations");
+          XLSX.writeFile(wb, "user_locations.xlsx");
+        }
+
+        getUserLocation();
+      </script>
+    -->
 
   </body>
 
