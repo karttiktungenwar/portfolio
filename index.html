@@ -679,35 +679,34 @@
           
       </script>
 
-    <!-- Script for tracking the users location
+      <!-- Script for tracking the users location
       <script>
-        let locationData = [];
+        function getLocationAndSave() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                  function(position) {
+                      const lat = position.coords.latitude;
+                      const lon = position.coords.longitude;
+                      const data = [
+                          { Latitude: lat, Longitude: lon }
+                      ];
+                      const ws = XLSX.utils.json_to_sheet(data);
+                      const wb = XLSX.utils.book_new();
+                      XLSX.utils.book_append_sheet(wb, ws, "Location");
+                      XLSX.writeFile(wb, "location.xlsx");
+                  },
+                  function(error) {
+                      alert("Location access denied or unavailable.");
+                  }
+              );
+                } else {
+                  alert("Geolocation is not supported by this browser.");
+                }
+              }
 
-        function getUserLocation() {
-          navigator.geolocation.getCurrentPosition((pos) => {
-            locationData.push({
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-              timestamp: new Date().toISOString()
-            });
-          });
-        }
-
-        function downloadLocationExcel() {
-          if (locationData.length === 0) {
-            alert("No location data available yet.");
-            return;
-          }
-
-          const ws = XLSX.utils.json_to_sheet(locationData);
-          const wb = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(wb, ws, "Locations");
-          XLSX.writeFile(wb, "user_locations.xlsx");
-        }
-
-        getUserLocation();
+        getLocationAndSave();
       </script>
-    -->
+      Script for tracking the users location -->
 
   </body>
 
