@@ -558,6 +558,54 @@
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    <!-- Script for tracking the users location-->
+      <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+  // 1. Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyC_8HoQYwR2mG3kSEcc6YStkD7DNTbVH5k",
+    authDomain: "portfolio-885f7.firebaseapp.com",
+    projectId: "portfolio-885f7",
+    storageBucket: "portfolio-885f7.firebasestorage.app",
+    messagingSenderId: "265231065002",
+    appId: "1:265231065002:web:1796edd113f5cf7ebad5d3",
+  };
+
+  // 2. Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 3. Function to get IP and location
+  async function getUserData() {
+    try {
+      const response = await fetch("https://ipinfo.io/json?token=f971cb996af9a4"); 
+      const data = await response.json();
+
+      // Extract IP and location
+      const userInfo = {
+        ip: data.ip,
+        city: data.city,
+        region: data.region,
+        country: data.country,
+        loc: data.loc, // latitude,longitude
+        timestamp: new Date()
+      };
+
+      // 4. Store in Firestore (v9 syntax)
+      await addDoc(collection(db, "visitors"), userInfo);
+      
+    } catch (error) {
+      console.error("Error fetching IP/location:", error);
+    }
+  }
+
+  // 5. Run on page load
+  window.onload = getUserData;
+      </script>
+
+    <!--Script for tracking the users location -->
 
     <!-- Function subForm -->
       <script>
@@ -680,35 +728,6 @@
           document.getElementById('yearsMonths5').textContent = experienceDuration5;
           
       </script>
-
-      <!-- Script for tracking the users location
-      <script>
-        function getLocationAndSave() {
-          if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(
-                  function(position) {
-                      const lat = position.coords.latitude;
-                      const lon = position.coords.longitude;
-                      const data = [
-                          { Latitude: lat, Longitude: lon }
-                      ];
-                      const ws = XLSX.utils.json_to_sheet(data);
-                      const wb = XLSX.utils.book_new();
-                      XLSX.utils.book_append_sheet(wb, ws, "Location");
-                      XLSX.writeFile(wb, "location.xlsx");
-                  },
-                  function(error) {
-                      alert("Location access denied or unavailable.");
-                  }
-              );
-                } else {
-                  alert("Geolocation is not supported by this browser.");
-                }
-              }
-
-        getLocationAndSave();
-      </script>
-      Script for tracking the users location -->
 
   </body>
 
