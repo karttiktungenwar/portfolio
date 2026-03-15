@@ -558,12 +558,12 @@
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
-    <!-- Script for tracking the users location-->
-      <script type="module">
+    <!-- Script for tracking unique visitors by IP -->
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-  // 1. Firebase config
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyC_8HoQYwR2mG3kSEcc6YStkD7DNTbVH5k",
     authDomain: "portfolio-885f7.firebaseapp.com",
@@ -573,37 +573,63 @@
     appId: "1:265231065002:web:1796edd113f5cf7ebad5d3",
   };
 
-  // 2. Initialize Firebase
+  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // 3. Function to get IP and location
-  async function getUserData() {
+  // Function to get IP and location
+  async function trackUniqueVisitor() {
     try {
+      // Get user IP/location data
       const response = await fetch("https://ipinfo.io/json?token=f971cb996af9a4"); 
       const data = await response.json();
 
-      // Extract IP and location
       const userInfo = {
         ip: data.ip,
-        city: data.city,
-        region: data.region,
-        country: data.country,
+        city: data.city || 'Unknown',
+        region: data.region || 'Unknown',
+        country: data.country || 'Unknown',
         loc: data.loc, // latitude,longitude
-        timestamp: new Date()
+        firstVisit: new Date(),
+        lastVisit: new Date(),
+        visitCount: 1
       };
 
-      // 4. Store in Firestore (v9 syntax)
-      await addDoc(collection(db, "visitors"), userInfo);
+      // Check if IP already exists
+      const q = query(collection(db, "visitors"), where("ip", "==", data.ip));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        // New visitor - insert new document
+        await addDoc(collection(db, "visitors"), userInfo);
+        console.log("New visitor tracked:", data.ip);
+      } else {
+        // Existing visitor - update lastVisit and increment visitCount
+        const visitorDoc = querySnapshot.docs[0];
+        const visitorRef = doc(db, "visitors", visitorDoc.id);
+        
+        await updateDoc(visitorRef, {
+          lastVisit: new Date(),
+          visitCount: visitorDoc.data().visitCount + 1
+        });
+        console.log("Existing visitor updated:", data.ip);
+      }
       
     } catch (error) {
-      console.error("Error fetching IP/location:", error);
+      console.error("Error tracking visitor:", error);
     }
   }
 
-  // 5. Run on page load
-  window.onload = getUserData;
-      </script>
+  // Run on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', trackUniqueVisitor);
+  } else {
+    trackUniqueVisitor();
+  }
+
+  // Also run if window.onload for compatibility
+  window.addEventListener('load', trackUniqueVisitor);
+</script>
 
     <!--Script for tracking the users location -->
 
